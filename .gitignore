@@ -1,5 +1,9 @@
 # Virtual environment
-venv/
+drlnd/
+python/
 
 # Simulator
 Reacher_Linux/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
