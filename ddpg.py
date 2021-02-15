@@ -8,6 +8,7 @@ from torch.autograd import Variable
 from memory import ReplayBuffer
 from model import ActorNetwork, CriticNetwork
 from config import *
+from OUNoise import OUNoise
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -33,16 +34,16 @@ class Agent():
 		# OUNoise
 		self.exploration_noise = OUNoise(action_size, seed)
 
-	def act(self, state, eps):
+	def act(self, state):
 		state = torch.from_numpy(state).float().unsqueeze(0).to(device)
 		
 		self.actor_local.eval()
 		with torch.no_grad():
 			action = self.actor_local(state).cpu().data.numpy()
-		self.qnetwork_local.train()
+		self.actor_local.train()
 
 		# Add exploration noise
-		action += self.noise.sample()
+		action += self.exploration_noise.sample()
 
 		return np.clip(action, -1, 1)
 
