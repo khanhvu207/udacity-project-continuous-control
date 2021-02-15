@@ -61,17 +61,17 @@ class Agent():
 		critic_loss = F.mse_loss(y, self.critic_local(states, actions))
 		
 		# Critic backprop 
-		self.critic_optimizer.no_grad()
+		self.critic_optimizer.zero_grad()
 		critic_loss.backward()
 		self.critic_optimizer.step()
 
 		# Actor loss
 		cur_actions = self.actor_local(states)
-		actor_loss = self.critic_local(states)
-		actor_loss = -np.mean(actor_loss)
+		actor_loss = self.critic_local(states, cur_actions)
+		actor_loss = -actor_loss.mean()
 
 		# Actor backprop
-		self.actor_optimizer.no_grad()
+		self.actor_optimizer.zero_grad()
 		actor_loss.backward()
 		self.actor_optimizer.step()
 
