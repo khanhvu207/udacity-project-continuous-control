@@ -10,3 +10,9 @@ Reacher_Linux/
 
 # logs
 unity-environment.log
+
+# caches
+__pycache__/
+
+# IDE
+.vscode/
